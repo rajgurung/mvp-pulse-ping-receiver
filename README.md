@@ -1,4 +1,3 @@
-```markdown
 # MVP Pulse Ping Receiver
 
 [![Go Version](https://img.shields.io/badge/go-1.22-blue)](https://golang.org/)
