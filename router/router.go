@@ -1,12 +1,17 @@
 package router
 
 import (
-    "github.com/gorilla/mux"
-    "pingreceiver/internal/handlers"  // 👈 import the handlers package
+	"github.com/gorilla/mux"
+	"pingreceiver/internal/client"
+	"pingreceiver/internal/handlers"
 )
 
 func NewRouter() *mux.Router {
-    r := mux.NewRouter()
-    r.HandleFunc("/ping/{token}", handlers.HandlePing).Methods("POST")
-    return r
+	r := mux.NewRouter()
+
+	pinger := &client.HttpPinger{}
+	handler := &handlers.PingHandler{Pinger: pinger}
+
+	r.HandleFunc("/ping/{token}", handler.HandlePing).Methods("POST")
+	return r
 }

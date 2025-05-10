@@ -8,7 +8,11 @@ import (
     "pingreceiver/internal/client"
 )
 
-func HandlePing(w http.ResponseWriter, r *http.Request) {
+type PingHandler struct {
+    Pinger client.Pinger
+}
+
+func (ph *PingHandler) HandlePing(w http.ResponseWriter, r *http.Request) {
     vars := mux.Vars(r)
     token := vars["token"]
 
@@ -22,7 +26,7 @@ func HandlePing(w http.ResponseWriter, r *http.Request) {
         "timestamp": time.Now().UTC(),
     }
 
-    err := client.ForwardPing(payload)
+    err := ph.Pinger.ForwardPing(payload)
     if err != nil {
         http.Error(w, "Failed to forward ping", http.StatusInternalServerError)
         return
